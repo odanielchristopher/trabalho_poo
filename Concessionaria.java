@@ -79,11 +79,7 @@ public class Concessionaria implements AgencyMethods {
   public Cliente getCliente() { return this.cliente; }
 
   // Metodos da Interface
-  public double calcLucro() throws Exception {
-    if (vendidos.isEmpty()) {
-      throw new Exception("fail: nenhum veiculo foi vendido ainda");
-    }
-
+  public double calcLucro() {
     double lucro = 0;
 
     for (Veiculo veiculo : this.vendidos.values()) {
