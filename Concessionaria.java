@@ -2,11 +2,15 @@ import java.util.*;
 import java.text.*;
 
 interface AgencyMethods {
-  double avaliarVeiculo(Veiculo veiculo);
-  double calcLucro();
+  // Calcula o lucro da loja baseado nos carros vendidos;
+  double calcLucro() throws Exception;
+  // Procura em qualquer uma das listas e retorna o veiculo desejado
   Veiculo procuraVeiculo(String id) throws Exception;
+  // Permite que o cliente compre um veiculo da loja e remova da lista de disponiveis
   void comprarVeiculo(String veiculoId) throws Exception;
+  // Permite que o cliente venda um veiculo para a loja e receba uma quantia por isso
   double venderVeiculo(Veiculo veiculo) throws Exception;
+  // Lista os veiculos da lista que for pedida
   void listarVeiculos(String listaId) throws Exception;
 }
 
@@ -30,6 +34,13 @@ public class Concessionaria implements AgencyMethods {
     }
 
     return id;
+  }
+  private double avaliarVeiculo(Veiculo veiculo) {
+    if (veiculo instanceof Carro) {
+      return avaliador.avaliarCarro( (Carro) veiculo ) + veiculo.calcComissao(carros_populares);
+    } else {
+      return avaliador.avaliarMoto( (Moto) veiculo ) + veiculo.calcComissao(cores_populares);
+    }
   }
 
   // Construtor
@@ -68,25 +79,12 @@ public class Concessionaria implements AgencyMethods {
   public Cliente getCliente() { return this.cliente; }
 
   // Metodos da Interface
-  public double avaliarVeiculo(Veiculo veiculo) {
-    if (veiculo instanceof Carro) {
-      return avaliador.avaliarCarro( (Carro) veiculo ) + veiculo.calcComissao(carros_populares);
-    } else {
-      return avaliador.avaliarMoto( (Moto) veiculo ) + veiculo.calcComissao(cores_populares);
+  public double calcLucro() throws Exception {
+    if (vendidos.isEmpty()) {
+      throw new Exception("fail: nenhum veiculo foi vendido ainda");
     }
-  }
-  public double calcLucro() {
-    double lucro = 0;
 
-    for (Veiculo veiculo : this.disponiveis.values()) {
-      if (veiculo instanceof Carro) {
-        lucro += veiculo.calcComissao(carros_populares);
-      } else if (veiculo instanceof Moto) {
-        lucro += veiculo.calcComissao(cores_populares);
-      } else {
-        lucro += veiculo.calcComissao(List.of(""));
-      }
-    }
+    double lucro = 0;
 
     for (Veiculo veiculo : this.vendidos.values()) {
       if (veiculo instanceof Carro) {

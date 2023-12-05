@@ -207,6 +207,10 @@ public class Main {
         System.out.println("========================================\n");
       }
 
+      System.out.println("\n================ SUCESSO =================");
+      System.out.println("! Seu veiculo foi comprado com sucesso !");
+      System.out.println("==========================================\n");
+
       System.out.println("Deseja comprar mais algum veiculo? 'sim' ou 'nao'");
       System.out.print("Sua resposta: ");
       line = scanner.nextLine().toLowerCase();
